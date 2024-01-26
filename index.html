@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
+    />
+    <title>Example Checkout Return Site</title>
+    <meta
+      name="description"
+      content="An example of what a user may see when coming back from a Banked Checkout"
+    />
+    <script>
+      window.addEventListener("load", () => {
+        const params = new URLSearchParams(window.location.search);
+        console.log(params);
+        const status = params.get("banked_checkout_final_status");
+        const validStatuses = ["succeeded", "pending", "failed", "cancelled"];
+        if (validStatuses.includes(status)) {
+          document.getElementById("unknown").style.display = "none";
+          document.getElementById("pay-status-unknown").style.display = "none";
+        }
+        switch (status) {
+          case "succeeded":
+            document.getElementById("pay-status-success").style.display =
+              "block";
+            document.getElementById("payment-success").style.display = "block";
+            break;
+          case "pending":
+            document.getElementById("pay-status-success").style.display =
+              "block";
+            document.getElementById("payment-pending").style.display = "block";
+            break;
+          case "failed":
+            document.getElementById("pay-status-fail").style.display = "block";
+            document.getElementById("payment-failure").style.display = "block";
+            break;
+          case "cancelled":
+            document.getElementById("pay-status-fail").style.display = "block";
+            document.getElementById("try-again").style.display = "block";
+            break;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Merchant Co.</h1>
+    <p>Where customers are always satisfied.</p>
+    <h2 style="display: flex; flex-direction: row">
+      <span style="padding-right: 1rem">Payment status</span>
+      <div id="pay-status-success" style="display: none">Successful</div>
+      <div id="pay-status-fail" style="display: none">Failed</div>
+      <div id="pay-status-unknown">Unknown</div>
+    </h2>
+    <p id="unknown">Your payment is in an unknown status.</p>
+    <p id="payment-success" style="display: none">
+      Thank you for your payment. Your payment was successful.
+    </p>
+    <p id="payment-pending" style="display: none">
+      Thank you for your payment. Your payment is pending and should be taken
+      from your account within a few days.
+    </p>
+    <p id="try-again" style="display: none">
+      If you would like to attempt the checkout again, the link is still active
+      and you can go through the checkout again
+    </p>
+    <p id="payment-failure" style="display: none">
+      Sorry, your payment was not successful. The link will no longer work and
+      you must arrange an alternate payment method.
+    </p>
+  </body>
+</html>
